@@ -1,3 +1,3 @@
-Dummu read me
+Dummy read me
 =====================
 
