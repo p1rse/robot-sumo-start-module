@@ -9,7 +9,9 @@
 
 volatile unsigned char buttonPressed=0;
 
-int main(void) {
+int main(void)
+{
+	//Init stuff
 	clock_prescale_set(0);
 	initIR();
 	initSW();
@@ -78,7 +80,7 @@ int main(void) {
 			_delay_ms(10);
 			if(SW_STOP)
 			{
-				sendStop(10);
+				sendStop(20);
 			}
 			//wait until button is released, to avoid sending unintetional commands
 			while(SW_STOP){}
@@ -90,7 +92,7 @@ int main(void) {
 			_delay_ms(10);
 			if (SW_START)
 			{
-				sendStart(10);
+				sendStart(20);
 			}
 			//wait until button is released, to avoid sending unintetional commands
 			while(SW_START){}
@@ -235,7 +237,7 @@ void sendStop(unsigned char repeats)
  * Prepares the remote for power-down mode (to save power)
  * Turns off more or less everything, thus drawing less than 1µA in power-down.
  * When it wakes up, it checks the battery voltage and signals
- * this by blinking all leds repeatedly, then going back to sleep
+ * a low-battery state by blinking all leds repeatedly, then going back to sleep
  * Please note that no command will be sent in a low-battery state
  */
 void goToSleep()
@@ -261,9 +263,10 @@ void goToSleep()
 	/*
 	 * The voltage measurement is a little weird
 	 * By using the battery voltage directly as vcc to the microcontroller
-	 * on can measure the internal 1.1V refernce, using vcc as analog reference voltage
+	 * one can measure the internal 1.1V reference, using vcc as analog reference voltage
 	 * and thereby indirectly measure the battery voltage.
 	 * The ADC value will increase as the battery voltage drops, hence the if(ADCH > LOW_VOLTAGE)
+	 * If the battery is fine, it continues based on the button pressed
 	 */
 	PRR &= ~_BV(PRADC);
 	ADMUX |= _BV(REFS0) | _BV(ADLAR) | 0b00001110;
