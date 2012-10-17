@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.2">
+<eagle version="6.3">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -137,6 +137,8 @@
 <vertex x="6.6" y="6"/>
 <vertex x="4.7" y="6"/>
 </polygon>
+<text x="3.3" y="12.3" size="2.1844" layer="25">+</text>
+<text x="3.5" y="26.9" size="2.1844" layer="25">-</text>
 </plain>
 <libraries>
 <library name="CRF">
