@@ -24,6 +24,10 @@
 //Should be about 2.4 V
 #define LOW_VOLTAGE 115
 
+//Sets repetion frequency for start and stop commands in ms
+//114 ms is standard for RC-5
+#define REPETITION_FREQ	114
+
 
 void sendProgCmd();
 void sendStart(unsigned char repeats);

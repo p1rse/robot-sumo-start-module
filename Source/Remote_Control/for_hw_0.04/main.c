@@ -25,11 +25,11 @@ int main(void)
 			while(SW_STOP)
 			{
 				_delay_ms(10);
-				if(SW_STOP)
+				while(SW_STOP)	//Commands will be sent as long as button is held
 				{
-					sendStop(5);
+					sendStop(1);
 				}
-				//wait until button is released, to avoid sending unintetional commands
+				//wait until button is released, to avoid sending unintentional commands
 				while(SW_STOP){}
 				_delay_ms(10);
 			}
@@ -41,11 +41,11 @@ int main(void)
 			while(SW_START)
 			{
 				_delay_ms(10);
-				if (SW_START)
+				while(SW_START)	//Commands will be sent as long as button is held
 				{
-					sendStart(5);
+					sendStart(1);
 				}
-				//wait until button is released, to avoid sending unintetional commands
+				//wait until button is released, to avoid sending unintentional commands
 				while(SW_START){}
 				_delay_ms(10);
 			}
@@ -61,7 +61,7 @@ int main(void)
 				{
 					sendProgCmd();
 				}
-				//wait until button is released, to avoid sending unintetional commands
+				//wait until button is released, to avoid sending unintentional commands
 				while(SW_PROG){}
 				_delay_ms(10);
 			}
@@ -71,7 +71,7 @@ int main(void)
 	}
 
 
-	//Used for testing the control
+	//Used for testing the control (does not rely on the power-down functions)
 	while(1)
 	{
 		if (SW_STOP)
@@ -82,7 +82,7 @@ int main(void)
 			{
 				sendStop(20);
 			}
-			//wait until button is released, to avoid sending unintetional commands
+			//wait until button is released, to avoid sending unintentional commands
 			while(SW_STOP){}
 			_delay_ms(200);
 		}
@@ -94,7 +94,7 @@ int main(void)
 			{
 				sendStart(20);
 			}
-			//wait until button is released, to avoid sending unintetional commands
+			//wait until button is released, to avoid sending unintentional commands
 			while(SW_START){}
 			_delay_ms(200);
 		}
@@ -106,7 +106,7 @@ int main(void)
 			{
 				sendProgCmd();
 			}
-			//wait until button is released, to avoid sending unintetional commands
+			//wait until button is released, to avoid sending unintentional commands
 			while(SW_PROG){}
 			_delay_ms(200);
 		}
@@ -146,14 +146,15 @@ void sendProgCmd()
 
 /*
  * Sends the start command using the current dip-switch setting
- * The command is repeated at 20ms intervals "repeats" number of times
+ * The command is repeated at frequency set in main.h intervals "repeats" number of times
+ * Repeats = 0 gives one message
  */
 void sendStart(unsigned char repeats)
 {
 	const unsigned char id = readDip();
 	if(id==1)
 	{
-		//Warn the user if he/she or 1
+		//Warn the user if he/she uses id 1
 		setLed(3,ON);
 		_delay_ms(300);
 		setLed(3,OFF);
@@ -166,6 +167,7 @@ void sendStart(unsigned char repeats)
 	else
 	{
 		setLed(3,ON);
+		repeats++;
 		while(repeats)
 		{
 			setLed(4,ON);
@@ -176,28 +178,27 @@ void sendStart(unsigned char repeats)
 			}
 			else
 			{
-				send_packet(RC5_ADR_EXPERIMENAL,(id<<1 | 0b00000001),CMDLED);
+				send_packet(RC5_ADR_EXPERIMENTAL,(id<<1 | 0b00000001),CMDLED);
 			}
 			setLed(4,OFF);
-			_delay_ms(20);
+			_delay_ms(REPETITION_FREQ);	//According to the standard, repetition rate should be 114ms
 			repeats--;
 		}
-		_delay_ms(200);
 		setLed(3,OFF);
-		_delay_ms(100);
 	}
 }
 
 /*
  * Sends the stop command using the current dip-switch setting
- * The command is repeated at 20ms intervals "repeats" number of times
+ * The command is repeated at a frequency set in main.h intervals "repeats" number of times
+ * Repeats = 0 gives one message
  */
 void sendStop(unsigned char repeats)
 {
 	const unsigned char id = readDip();
 	if(id==1)
 	{
-		//Warn the user if he/she or 1
+		//Warn the user if he/she uses id 1
 		setLed(2,ON);
 		_delay_ms(300);
 		setLed(2,OFF);
@@ -210,6 +211,7 @@ void sendStop(unsigned char repeats)
 	else
 	{
 		setLed(2,ON);
+		repeats++;
 		while(repeats)
 		{
 			setLed(4,ON);
@@ -220,15 +222,13 @@ void sendStop(unsigned char repeats)
 			}
 			else
 			{
-				send_packet(RC5_ADR_EXPERIMENAL,(id<<1 & 0b11111110),CMDLED);
+				send_packet(RC5_ADR_EXPERIMENTAL,(id<<1 & 0b11111110),CMDLED);
 			}
 			setLed(4,OFF);
-			_delay_ms(20);
+			_delay_ms(REPETITION_FREQ);
 			repeats--;
 		}
-		_delay_ms(200);
 		setLed(2,OFF);
-		_delay_ms(100);
 	}
 
 }
