@@ -41,9 +41,9 @@ int main(void)
 			while(SW_START)
 			{
 				_delay_ms(10);
-				while(SW_START)	//Commands will be sent as long as button is held
+				if (SW_START)	//Start commands will be sent a set number of times, in quick succession
 				{
-					sendStart(1);
+					sendStart(3);
 				}
 				//wait until button is released, to avoid sending unintentional commands
 				while(SW_START){}
@@ -57,7 +57,7 @@ int main(void)
 			while(SW_PROG)
 			{
 				_delay_ms(10);
-				if (SW_PROG)
+				if (SW_PROG)	//Programming command will be sent only once, to minimize the risk of unintentional programming
 				{
 					sendProgCmd();
 				}
@@ -181,7 +181,7 @@ void sendStart(unsigned char repeats)
 				send_packet(RC5_ADR_EXPERIMENTAL,(id<<1 | 0b00000001),CMDLED);
 			}
 			setLed(4,OFF);
-			_delay_ms(REPETITION_FREQ);	//According to the standard, repetition rate should be 114ms
+			_delay_ms(30);	//Start commands should be sent in quick succession
 			repeats--;
 		}
 		setLed(3,OFF);
