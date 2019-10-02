@@ -1,6 +1,6 @@
 Robot-sumo start module
 =====================
-Visit http://robotsm.se/startmodule for information of how the start module system works.
+Visit http://www.startmodule.com for information of how the start module system works.
 
 This page is mainly for those who are interested in the sourcecode and schematics of the start module.
 
