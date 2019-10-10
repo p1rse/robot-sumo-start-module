@@ -9,7 +9,7 @@ For those who want to build their own modules based on this code and microcontro
 
 Using the following avrdude command is used when programming the prebuilt modules. It utilizes the AvrISP MKII programmer, so if you use any other programmer, change the programming command accordingly. Make sure to be in the correct folder, or replace "StartModule.hex" to the correct path to your hex-file.
 
-avrdude	-pt13 -cavrispmkII -Pusb -u -Uflash:w:StartModule.hex:a -Ulfuse:w:0x79:m-Uhfuse:w:0xef:m
+avrdude	-pt13 -cavrispmkII -Pusb -u -Uflash:w:StartModule.hex:a -Ulfuse:w:0x79:m -Uhfuse:w:0xef:m
 
 These fuse bits sets the following. The ones marked (important) have the potential to brick your system if set incorrectly. Set them as below and you should be fine:
 - No brownout detection
