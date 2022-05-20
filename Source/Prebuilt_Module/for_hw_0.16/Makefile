@@ -15,7 +15,7 @@
 
 DEVICE     = attiny13a
 DEVICEFLASH = t13
-CLOCK      = 8000000
+CLOCK      = 4800000
 PROGRAMMER = -c avrispmkII -P usb
 OBJECTS    = main.o ir_rc5.o
 FUSES      = -Ulfuse:w:0x79:m-Uhfuse:w:0xef:m
